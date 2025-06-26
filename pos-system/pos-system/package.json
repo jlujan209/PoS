@@ -11,6 +11,10 @@
     "start": "electron ."
   },
   "devDependencies": {
-    "electron": "^37.1.0"
+    "electron": "^37.1.0",
+    "electron-rebuild": "^3.2.9"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.1.1"
   }
 }

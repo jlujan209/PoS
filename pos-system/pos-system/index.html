@@ -1,11 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>POS System</title>
-    </head>
-    <body>
-        <h1>POS</h1>
-    </body>
+<head>
+  <meta charset="UTF-8">
+  <title>Punto de Venta</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Super Lujan</h1>
+
+  <div class="error-box" id="errorBox"></div>
+  <div class="message-box" id="messageBox"></div>
+
+  <input
+    type="text"
+    id="barcodeInput"
+    class="barcode-input"
+    placeholder="Escanea el código de barras"
+    autofocus
+  />
+
+  <table id="cartTable">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Codigo</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="total" id="grandTotal">Total: $0.00</div>
+  <button class="checkout-btn" onclick="checkout()">Completar Transacción</button>
+
+  <!-- Quantity Modal -->
+  <div id="quantityModal" class="modal">
+    <div class="modal-content">
+      <h3>Ingresa la Cantidad</h3>
+      <input type="number" id="quantityInput"  min="1" />
+      <br />
+      <button onclick="confirmQuantity()">Confirmar</button>
+    </div>
+  </div>
+
+  <!-- Price Modal -->
+<div id="priceModal" class="modal">
+  <div class="modal-content">
+    <h3>Ingresa el Precio</h3>
+    <input type="number" id="priceInput"  min="0.01" step="0.01" />
+    <br />
+    <button onclick="confirmPrice()">Confirmar</button>
+  </div>
+</div>
+
+  <script src="script.js"></script>
+</body>
 </html>
