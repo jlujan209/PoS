@@ -1,0 +1,16 @@
+{
+  "name": "pos-system",
+  "version": "1.0.0",
+  "description": "Point of Sale System",
+  "license": "ISC",
+  "author": "Jorge Lujan",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^37.1.0"
+  }
+}
