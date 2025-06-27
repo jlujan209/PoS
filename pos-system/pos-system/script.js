@@ -223,4 +223,12 @@ barcodeInput.addEventListener("keypress", function (e) {
     messageBox.textContent = "";
   }
 
+  function goToCorteY() {
+    window.location.href = "corte-y.html";
+  }
+
+  function goToHistorial() {
+    window.location.href = "historial.html";
+  }
+
   window.onload = focusInput;

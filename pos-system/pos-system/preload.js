@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const Database = require('better-sqlite3');
 const { contextBridge } = require('electron');
+const { get } = require('http');
 
 
 const userDataPathArg = process.argv.find(arg => arg.startsWith('--userDataPath='));
@@ -35,5 +36,9 @@ contextBridge.exposeInMainWorld('posAPI', {
   getCurrentSale: () => {
     const stmt = db.prepare(`SELECT IFNULL(SUM(sale), 0) as total FROM all_sales WHERE DATE(sale_date) = DATE('now')`);
     return stmt.get().total || 0;
-  }
+  },
+  getDailySales: () => {
+    const stmt = db.prepare('SELECT sale_date, sale FROM daily_sales ORDER BY sale_date DESC');
+    return stmt.all();
+  },
 });

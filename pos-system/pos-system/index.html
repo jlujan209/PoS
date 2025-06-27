@@ -6,13 +6,13 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div>
-    <button onclick="toggleNavigation()">=</button>
-    <nav id="navigation">
+  <div class="navbar-container">
+    <button class="nav-toggle" onclick="toggleNavigation()">=</button>
+    <nav id="navigation" class="nav-menu">
       <button onclick="getCurrentSale()">Corte X</button>
-      <button>Corte Y</button>
+      <button onclick="goToCorteY()">Corte Y</button>
       <button onclick="logDailySale()">Corte Z</button>
-      <button>Historial de Ventas</button>
+      <button onclick="goToHistorial()">Historial de Ventas</button>
     </nav>
   </div>
   <h1>Super Lujan</h1>

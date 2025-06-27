@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Punto de Venta: Historial de Ventas</title>
+        <link rel="stylesheet" href="historial.css">
+    </head>
+    <body>
+        <button onclick="goToHome()">← Volver</button>
+        <h1>Historial de Ventas</h1>
+
+        <div class="date-search">
+            <label for="searchDate">Selecciona una fecha:</label>
+            <input type="date" id="searchDate" />
+            <button onclick="searchByDate()">Buscar</button>
+            <div id="searchResult" class="search-result"></div>
+        </div>
+
+        <div class="table-container">
+            <table id="salesTable">
+            <thead>
+                <tr>
+                <th>Fecha</th>
+                <th>Venta</th>
+                </tr>
+            </thead>
+            <tbody id="salesHistory"></tbody>
+            </table>
+        </div>
+    </body>
+
+    <script src="historial.js"></script>
+</html>
