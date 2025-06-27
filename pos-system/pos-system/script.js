@@ -111,31 +111,40 @@ barcodeInput.addEventListener("keypress", function (e) {
     quantityModal.style.display = "none";
   }
 
-  function confirmQuantity() {
-    const quantity = parseInt(quantityInput.value);
-    hideQuantityModal();
+function confirmQuantity() {
+  let quantity = parseInt(quantityInput.value);
+  hideQuantityModal();
 
-    if (isNaN(quantity) || quantity <= 0) {
-      quantity = 1;
-    }
+  if (isNaN(quantity) || quantity <= 0) {
+    quantity = 1;
+  }
 
-    const product = window.currentProduct;
-    const itemKey = currentBarcode + (currentPriceOverride ?? "");
-
-    if (cart[itemKey]) {
-      cart[itemKey].quantity += quantity;
-    } else {
-      cart[itemKey] = {
-        name: product.name,
-        price: currentPriceOverride ?? product.price,
-        quantity,
-        barcode: currentBarcode
-      };
-    }
-
+  if (window.editingKey) {
+    cart[window.editingKey].quantity = quantity;
+    window.editingKey = null;
     updateCartDisplay();
     focusInput();
+    return;
   }
+
+  const product = window.currentProduct;
+  const itemKey = currentBarcode + (currentPriceOverride ?? "");
+
+  if (cart[itemKey]) {
+    cart[itemKey].quantity += quantity;
+  } else {
+    cart[itemKey] = {
+      name: product.name,
+      price: currentPriceOverride ?? product.price,
+      quantity,
+      barcode: currentBarcode
+    };
+  }
+
+  updateCartDisplay();
+  focusInput();
+}
+
 
   function updateCartDisplay() {
     cartTableBody.innerHTML = "";
@@ -153,6 +162,10 @@ barcodeInput.addEventListener("keypress", function (e) {
         <td>${item.quantity}</td>
         <td>$${item.price.toFixed(2)}</td>
         <td>$${itemTotal.toFixed(2)}</td>
+        <td>
+            <button onclick="editQuantity('${key}')">✏️</button>
+            <button onclick="deleteItem('${key}')">🗑️</button>
+        </td>
       `;
       cartTableBody.appendChild(row);
     }
@@ -161,6 +174,20 @@ barcodeInput.addEventListener("keypress", function (e) {
     grandTotalDisplay.textContent = `Total: $${total.toFixed(2)}`;
     container.scrollTop = container.scrollHeight;
   }
+
+  function deleteItem(key) {
+    delete cart[key];
+    updateCartDisplay();
+    focusInput();
+    }
+
+  function editQuantity(key) {
+    window.editingKey = key;
+    quantityInput.value = cart[key].quantity;
+    quantityModal.style.display = "block";
+    setTimeout(() => quantityInput.focus(), 100);
+    }
+
 
   function cancelTransaction() {
     currentTotal = 0;
@@ -206,7 +233,8 @@ barcodeInput.addEventListener("keypress", function (e) {
 
   function logDailySale() {
     window.posAPI.logDailySale();
-    getCurrentSale();
+    showMessage("Corte Z - Venta del día registrada.");
+    setTimeout(()=> getCurrentSale(), 2020);
   }
 
   function getCurrentSale() {

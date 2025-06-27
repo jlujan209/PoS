@@ -41,4 +41,18 @@ contextBridge.exposeInMainWorld('posAPI', {
     const stmt = db.prepare('SELECT sale_date, sale FROM daily_sales ORDER BY sale_date DESC');
     return stmt.all();
   },
+  getHourlySales: () => {
+    const stmt = db.prepare(`
+        SELECT 
+        strftime('%H:00', datetime(sale_date, '-7 hours')) AS hour,
+        SUM(sale) AS total
+        FROM all_sales
+        WHERE DATE(datetime(sale_date, '-7 hours')) = DATE(datetime('now', '-7 hours'))
+        AND CAST(strftime('%H', datetime(sale_date, '-7 hours')) AS INTEGER) BETWEEN 8 AND 22
+        GROUP BY hour
+        ORDER BY hour ASC
+    `);
+    return stmt.all();
+    }
+
 });

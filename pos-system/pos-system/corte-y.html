@@ -1,13 +1,26 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Punto de Venta: Corte Y</title>
-        <link rel="stylesheet" href="corte-y.css">
-    </head>
-    <body>
-        <h1>Corte Y</h1>
-        <button onclick="goToHome()">Volver</button>
-    </body>
-    <script src="corte-y.js"></script>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Punto de Venta: Corte Y</title>
+  <link rel="stylesheet" href="corte-y.css">
+</head>
+<body>
+  <button onclick="goToHome()">← Volver</button>
+  <h1>Corte Y</h1>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Hora</th>
+          <th>Venta Total</th>
+        </tr>
+      </thead>
+      <tbody id="hourlySalesBody"></tbody>
+    </table>
+  </div>
+
+  <script src="corte-y.js"></script>
+</body>
 </html>
