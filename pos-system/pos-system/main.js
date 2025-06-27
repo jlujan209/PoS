@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron/main')
+const { app, BrowserWindow, Menu } = require('electron/main')
 const path = require('path')
 const fs = require('fs')
 const Database = require('better-sqlite3');
@@ -22,6 +22,21 @@ const createDatabase = () => {
     );
   `);
 
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS all_sales (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      sale REAL NOT NULL,
+      sale_date TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    `);
+
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS daily_sales (
+        sale_date TEXT PRIMARY KEY NOT NULL DEFAULT (date('now')),
+        sale REAL NOT NULL
+      );
+      `)
+
   if (isNewDatabase) {
     const insert = db.prepare('INSERT INTO products (barcode, name, price) VALUES (?, ?, ?)');
     insert.run('4', 'Milk', 2.5);
@@ -39,7 +54,7 @@ const createWindow = () => {
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: false,
-      additionalArguments: [`--userDataPath=${userDataPath}`] 
+      additionalArguments: [`--userDataPath=${userDataPath}`] ,
     },
   })
   win.maximize();
@@ -49,6 +64,7 @@ const createWindow = () => {
 }
 
 app.whenReady().then(() => {
+  Menu.setApplicationMenu(null);
   createDatabase();
   createWindow();
 

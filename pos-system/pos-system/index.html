@@ -6,12 +6,24 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+  <div>
+    <button onclick="toggleNavigation()">=</button>
+    <nav id="navigation">
+      <button onclick="getCurrentSale()">Corte X</button>
+      <button>Corte Y</button>
+      <button onclick="logDailySale()">Corte Z</button>
+      <button>Historial de Ventas</button>
+    </nav>
+  </div>
   <h1>Super Lujan</h1>
 
   <div class="error-box" id="errorBox"></div>
-  <div class="message-box" id="messageBox"></div>
-
+  <div class="message-container" id="messageContainer">
+    <div class="message-box" id="messageBox"></div>
+    <button style="display: none;" onclick="clearMessage()" id="clearMessageButton">X</button>
+  </div>
+  
+  
   <input
     type="text"
     id="barcodeInput"
@@ -19,7 +31,7 @@
     placeholder="Escanea el código de barras"
     autofocus
   />
-
+  <div class="table-container" id="tableContainer">
   <table id="cartTable">
     <thead>
       <tr>
@@ -32,9 +44,13 @@
     </thead>
     <tbody></tbody>
   </table>
+  </div>
 
   <div class="total" id="grandTotal">Total: $0.00</div>
-  <button class="checkout-btn" onclick="checkout()">Completar Transacción</button>
+  <div class="transaction-btn-container">
+    <button class="cancel-btn" onclick="cancelTransaction()">Cancelar Transacción</button>
+    <button class="checkout-btn" onclick="checkout()">Completar Transacción</button>
+  </div>
 
   <!-- Quantity Modal -->
   <div id="quantityModal" class="modal">

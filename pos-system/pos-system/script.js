@@ -1,17 +1,11 @@
 
-//   const productDB = {
-//     "123456789012": { name: "Milk", price: 2.5 },
-//     "987654321098": { name: "Bread", price: 1.75 },
-//     "111222333444": { name: "Eggs", price: 3.0 },
-//     "1": { name: "Mercancías Generales", price: 0 }
-//   };
-
   const cart = {};
   const barcodeInput = document.getElementById("barcodeInput");
   const cartTableBody = document.querySelector("#cartTable tbody");
   const grandTotalDisplay = document.getElementById("grandTotal");
   const errorBox = document.getElementById("errorBox");
   const messageBox = document.getElementById("messageBox");
+  const messageContainer = document.getElementById("messageContainer");
 
   const quantityModal = document.getElementById("quantityModal");
   const quantityInput = document.getElementById("quantityInput");
@@ -19,8 +13,25 @@
   const priceModal = document.getElementById("priceModal");
   const priceInput = document.getElementById("priceInput");
 
+  const navigation = document.getElementById("navigation");
+  navigation.style.display = "none";
+
+  const container = document.getElementById('tableContainer');
+
+  const clearMessageButton = document.getElementById("clearMessageButton");
+
   let currentBarcode = "";
   let currentPriceOverride = null;
+
+  let currentTotal = 0;
+
+  function toggleNavigation() {
+    if (navigation.style.display === "block") {
+      navigation.style.display = "none";
+    } else {
+      navigation.style.display = "block";
+    }
+  }
 
   function focusInput() {
     barcodeInput.focus();
@@ -39,6 +50,9 @@ barcodeInput.addEventListener("keypress", function (e) {
     if (barcode === "1") {
       currentBarcode = barcode;
       currentPriceOverride = null;
+      window.currentProduct = {
+        name: "Mercancías Generales"
+      };
       showPriceModal();
       return;
     }
@@ -143,7 +157,17 @@ barcodeInput.addEventListener("keypress", function (e) {
       cartTableBody.appendChild(row);
     }
 
+    currentTotal = total.toFixed(2);
     grandTotalDisplay.textContent = `Total: $${total.toFixed(2)}`;
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function cancelTransaction() {
+    currentTotal = 0;
+    Object.keys(cart).forEach(k => delete cart[k]);
+    updateCartDisplay();
+    focusInput();
+    showMessage("Transacción cancelada.");
   }
 
   function checkout() {
@@ -152,6 +176,8 @@ barcodeInput.addEventListener("keypress", function (e) {
       return;
     }
 
+    window.posAPI.logSale(currentTotal);
+    currentTotal = 0;
     showMessage("Transacción Completada!");
     Object.keys(cart).forEach(k => delete cart[k]);
     updateCartDisplay();
@@ -170,12 +196,31 @@ barcodeInput.addEventListener("keypress", function (e) {
 
   function showMessage(message) {
     messageBox.textContent = message;
-    messageBox.style.display = "block";
+    messageContainer.style.display = "flex";
     focusInput();
     setTimeout(() => {
-      messageBox.style.display = "none";
+      messageContainer.style.display = "none";
       messageBox.textContent = "";
     }, 2000);
+  }
+
+  function logDailySale() {
+    window.posAPI.logDailySale();
+    getCurrentSale();
+  }
+
+  function getCurrentSale() {
+    const currentSale = window.posAPI.getCurrentSale();
+    messageBox.textContent = `Venta del día: $${currentSale.toFixed(2)}`;
+    messageContainer.style.display = "flex";
+    clearMessageButton.style.display = "block";
+  }
+
+  function clearMessage() {
+    focusInput();
+    clearMessageButton.style.display = "none";
+    messageContainer.style.display = "none";
+    messageBox.textContent = "";
   }
 
   window.onload = focusInput;

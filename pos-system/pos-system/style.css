@@ -30,10 +30,48 @@
       text-align: center;
     }
 
+    tbody tr:nth-child(even) {
+      background-color: #ede8e8;
+    }
+
+    .table-container {
+      height: 40vh;          
+      overflow-y: auto;
+      margin-bottom: 20px;   
+      border: 1px solid #ddd;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background-color: white; 
+      z-index: 1;   
+      border-bottom: #ddd 1px solid;           
+    }
+
     .total {
       font-size: 1.5rem;
       font-weight: bold;
       text-align: right;
+    }
+
+    .transaction-btn-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .cancel-btn {
+      background-color: #f44336;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      float: left;
+    }
+    .cancel-btn:hover {
+      background-color: #e53935;
     }
 
     .checkout-btn {
@@ -90,10 +128,30 @@
       display: none;
     }
 
-    .message-box {
-        color: green;
-        font-weight: bold;
-        margin-bottom: 10px;    
+    .message-container {
+      width: 50%;
+      margin: 0 auto;
+      display: none;
+      align-items: center;     
+      justify-content: space-around; 
+      color: green;
+      font-weight: bold;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid green;
+      border-radius: 5px;
+      background-color: #f0fff0;
+    }
+
+    .message-box {    
         text-align: center;
-        display: none;
+    }
+
+    #clearMessageButton {
+      background: transparent;
+      border: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: red;
     }

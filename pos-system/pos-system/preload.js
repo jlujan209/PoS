@@ -22,6 +22,18 @@ try {
 contextBridge.exposeInMainWorld('posAPI', {
   getProductByBarcode: (barcode) => {
     const stmt = db.prepare('SELECT name, price FROM products WHERE barcode = ?');
-    return stmt.get(barcode); // returns { name, price } or undefined
+    return stmt.get(barcode); 
+  },
+  logSale: (sale) => {
+    const stmt = db.prepare('INSERT INTO all_sales (sale) VALUES (?)');
+    stmt.run(sale);
+  },
+  logDailySale: () => {
+    const stmt = db.prepare(`INSERT OR REPLACE INTO daily_sales (sale_date, sale) SELECT DATE('now'), IFNULL(SUM(sale), 0) FROM all_sales WHERE DATE(sale_date) = DATE('now')`)
+    stmt.run();
+  },
+  getCurrentSale: () => {
+    const stmt = db.prepare(`SELECT IFNULL(SUM(sale), 0) as total FROM all_sales WHERE DATE(sale_date) = DATE('now')`);
+    return stmt.get().total || 0;
   }
 });
