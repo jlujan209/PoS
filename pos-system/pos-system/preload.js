@@ -30,11 +30,11 @@ contextBridge.exposeInMainWorld('posAPI', {
     stmt.run(sale);
   },
   logDailySale: () => {
-    const stmt = db.prepare(`INSERT OR REPLACE INTO daily_sales (sale_date, sale) SELECT DATE('now'), IFNULL(SUM(sale), 0) FROM all_sales WHERE DATE(sale_date) = DATE('now')`)
+    const stmt = db.prepare(`INSERT OR REPLACE INTO daily_sales (sale_date, sale) SELECT DATE(datetime('now', '-7 hours')), IFNULL(SUM(sale), 0) FROM all_sales WHERE DATE(datetime(sale_date, '-7 hours')) = DATE(datetime('now', '-7 hours'))`)
     stmt.run();
   },
   getCurrentSale: () => {
-    const stmt = db.prepare(`SELECT IFNULL(SUM(sale), 0) as total FROM all_sales WHERE DATE(sale_date) = DATE('now')`);
+    const stmt = db.prepare(`SELECT IFNULL(SUM(sale), 0) as total FROM all_sales WHERE DATE(datetime(sale_date, '-7 hours')) = DATE(datetime('now', '-7 hours'))`);
     return stmt.get().total || 0;
   },
   getDailySales: () => {

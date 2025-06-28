@@ -49,6 +49,7 @@ const createDatabase = () => {
 const createWindow = () => {
   const win = new BrowserWindow({
     show: false,
+    icon: path.join(__dirname, 'assets', 'icon.png'), 
     webPreferences: {
       preload: path.join( __dirname , 'preload.js'),
       contextIsolation: true,
@@ -60,7 +61,7 @@ const createWindow = () => {
   win.maximize();
   win.loadFile('index.html');
   
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
